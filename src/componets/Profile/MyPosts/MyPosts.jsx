@@ -11,13 +11,12 @@ const MyPosts = () => {
                 <button>Add post</button>
             </div>
             <div className={s.posts}>
-                <Post />
-                <Post />
-                <Post />
-
+                <Post message='Hi, how are you?' />
+                <Post message="It's my first post" />
+                <Post message='Ура!!!' />
             </div>
         </div>
     );
-}
+};
 
 export default MyPosts;
