@@ -16,8 +16,9 @@ const App = () => {
 				<Header/>
 				<Navbar/>
 				<div className='app-wrapper-content'>
-					<Route path='/profile' component={Dialogs}/>
-					<Route path='/dialogs' component={Profile}/>
+					{/*//exact path='/dialogs' - чтоб переходил только по dialogs - и ни куда дальше*/}
+					<Route path='/dialogs' component={Dialogs}/>{/*//Route - перехватывает пути - url(path='/profile') и загружает нужный компонент(Dialogs)*/}
+					<Route path='/profile' component={Profile}/>
 				</div>
 			</div>
 		</BrowserRouter>
