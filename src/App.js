@@ -21,10 +21,10 @@ const App = (props) => {
 					{/*<Route path='/profile' component={Profile}/>*/}
 
 					<Route path='/dialogs' render={()=> <Dialogs
-																										state={props.state.dialogsPage}/>}/>
+																										store={props.store}/>}/>
 					<Route path='/profile' render={()=> <Profile
 																										state={props.state.profilePage}
-																										addPost={props.addPost}/>}/>
+																										dispatch={props.dispatch}/>}/>
 				</div>
 			</div>
 		</BrowserRouter>

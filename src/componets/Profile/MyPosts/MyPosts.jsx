@@ -1,6 +1,7 @@
 import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
+import {addPostActionCreator} from "../../../redux/state";
 
 const MyPosts = (props) => {
 
@@ -9,7 +10,9 @@ const MyPosts = (props) => {
 	let newPostElement = React.createRef();
 	const addPost = () => {
 		let text = newPostElement.current.value;
-		props.addPost(text);
+		// props.addPost(text);
+		// props.dispatch({type: 'ADD-POST', message: text});
+		props.dispatch(addPostActionCreator(text));
 		newPostElement.current.value = '';
 	};
 
@@ -18,7 +21,7 @@ const MyPosts = (props) => {
 			<h3>My post</h3>
 			<div>
 				<div>
-					<textarea ref={newPostElement}></textarea>
+					<textarea ref={newPostElement}/>
 				</div>
 				<div>
 					<button onClick={addPost}>Add post</button>
@@ -26,9 +29,6 @@ const MyPosts = (props) => {
 			</div>
 			<div className={s.posts}>
 				{postsElements}
-				{/*<Post message='Hi, how are you?'/>*/}
-				{/*<Post message="It's my first post"/>*/}
-				{/*<Post message='Ура!!!'/>*/}
 			</div>
 		</div>
 	);
