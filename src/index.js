@@ -19,8 +19,8 @@ let renderEntireTree = (state)=> {
 	//debugger;
 	ReactDOM.render(
 		<React.StrictMode>
-			{/*<App posts={posts} dialogs={dialogs} messages={messages}/>*/}
-			<App state={state} dispatch={store.dispatch.bind(store)} store={store}/>
+				{/*<App posts={posts} dialogs={dialogs} messages={messages}/>*/}
+				<App state={state} dispatch={store.dispatch.bind(store)} store={store}/>
 		</React.StrictMode>,
 		document.getElementById('root')
 	);
