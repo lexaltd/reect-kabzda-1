@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import store from './redux/redux-store';
+import {Provider} from "react-redux";
+// import {Provider} from "./StoreContext";
 
 
 // let renderEntireTree = (state)=> {
@@ -15,22 +17,24 @@ import store from './redux/redux-store';
 // 		document.getElementById('root')
 // 	);
 // };
-let renderEntireTree = (state)=> {
+let renderEntireTree = ()=> {
 	//debugger;
 	ReactDOM.render(
 		<React.StrictMode>
-				{/*<App posts={posts} dialogs={dialogs} messages={messages}/>*/}
-				<App state={state} dispatch={store.dispatch.bind(store)} store={store}/>
+			<Provider store={store}>
+				{/*<App state={state} dispatch={store.dispatch.bind(store)} store={store}/>*/}
+				<App />
+			</Provider>
 		</React.StrictMode>,
 		document.getElementById('root')
 	);
 };
 
-renderEntireTree(store.getState());
+renderEntireTree();
 
 store.subscribe(()=>{
-	let state = store.getState();
-	renderEntireTree(state);
+	// let state = store.getState();
+	renderEntireTree();
 });
 
 // If you want your app to work offline and load faster, you can change
