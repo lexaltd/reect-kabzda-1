@@ -32,6 +32,7 @@ let mapDispatchToProps = (dispatch) => {
 	}
 };
 
+//Этот компонент нужен чтоб прокинуть state(данные, состояние) и функции (dispatch) для работы со state
 const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(Users);
 
 export default UsersContainer;
