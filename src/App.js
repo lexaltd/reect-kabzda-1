@@ -3,11 +3,11 @@ import logo from './logo.svg';
 import './App.css';
 import Header from './componets/Header/Header';
 import Navbar from './componets/Navbar/Navbar';
-import Profile from './componets/Profile/Profile';
 import {BrowserRouter, Route} from "react-router-dom";
 import state, {addPost} from "./redux/store";
 import DialogsContainer from "./componets/Dialogs/DialogsContainer";
 import UsersContainer from "./componets/Users/UsersContainer";
+import ProfileContainer from "./componets/Profile/ProfileContainer";
 
 const App = (props) => {
 	return (
@@ -25,7 +25,8 @@ const App = (props) => {
 					{/*<Route path='/profile' render={()=><Profile store={props.store}/> }/>*/}
 
 					<Route path='/dialogs' render={()=><DialogsContainer />}/>
-					<Route path='/profile' render={()=><Profile /> }/>
+					{/*<Route path='/profile' render={()=><Profile /> }/>*/}
+					<Route path='/profile/:userId?' render={()=><ProfileContainer /> }/>{/*? знак даёт понять что :userId парамеир не обязательный*/}
 					<Route path='/users' render={()=><UsersContainer /> }/>
 				</div>
 			</div>
