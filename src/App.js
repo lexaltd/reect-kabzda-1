@@ -1,19 +1,19 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Header from './componets/Header/Header';
 import Navbar from './componets/Navbar/Navbar';
 import {BrowserRouter, Route} from "react-router-dom";
 import state, {addPost} from "./redux/store";
 import DialogsContainer from "./componets/Dialogs/DialogsContainer";
 import UsersContainer from "./componets/Users/UsersContainer";
 import ProfileContainer from "./componets/Profile/ProfileContainer";
+import HeaderContainer from "./componets/Header/HeaderContainer";
 
 const App = (props) => {
 	return (
 		<BrowserRouter>
 			<div className='app-wrapper'>
-				<Header/>
+				<HeaderContainer/>
 				<Navbar/>
 				<div className='app-wrapper-content'>
 					{/*//exact path='/dialogs' - чтоб переходил только по dialogs - и ни куда дальше*/}
