@@ -3,15 +3,11 @@ import {connect} from "react-redux";
 import {
 	follow,
 	setCurrentPage,
-	setUsers,
-	setTotalUsersCount,
-	toggleIsFetching,
-	unfollow, toggleFollowingProgress
+	unfollow, toggleFollowingProgress, getUsers
 } from "../../redux/users-reducer";
 import * as axios from 'axios';//Импортируем всё что там находится в один объект axios
 import Users from './Users';
 import Preloader from "../common/Preloader/Preloader";
-import {usersAPI} from "../../api/api";
 
 //Этот компонент нужен чтоб в нём выполнять AJAX запросы
 class UsersContainer extends React.Component {
@@ -20,30 +16,31 @@ class UsersContainer extends React.Component {
 	// }
 
 	componentDidMount() {
-		this.props.toggleIsFetching(true);//Это для крутилки
-
-		usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-				this.props.toggleIsFetching(false);//Это для крутилки
-				this.props.setUsers(data.items);
-				this.props.setTotalUsersCount(data.totalCount);
-			});
+		// this.props.toggleIsFetching(true);//Это для крутилки(включаем)
+		//
+		// usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
+		// 		this.props.toggleIsFetching(false);//Это для крутилки(выключаем)
+		// 		this.props.setUsers(data.items);
+		// 		this.props.setTotalUsersCount(data.totalCount);
+		// 	});
+		this.props.getUsers(this.props.currentPage, this.props.pageSize);
 	}
 
 	onPageChanged = (pageNumber) => {
-		this.props.setCurrentPage(pageNumber);
-		this.props.toggleIsFetching(true);//Это для крутилки
-		// axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`,
-		// 	{withCredentials: true,})
-		// 	.then(response => {
-		usersAPI.getUsers(pageNumber, this.props.pageSize).then(data => {
-				this.props.toggleIsFetching(false);//Это для крутилки
-				this.props.setUsers(data.items);
-			});
+		// this.props.setCurrentPage(pageNumber);
+		// this.props.toggleIsFetching(true);//Это для крутилки
+		//
+		// usersAPI.getUsers(pageNumber, this.props.pageSize).then(data => {
+		// 		this.props.toggleIsFetching(false);//Это для крутилки
+		// 		this.props.setUsers(data.items);
+		// 	});
+		this.props.setCurrentPage(pageNumber);//Чтоб выделялся жирным номер строки
+		this.props.getUsers(pageNumber, this.props.pageSize);
 	}
 
 	render() {//Возвращает JSX разметку
 		return <>
-			{this.props.isFetching ? <Preloader/> : null}
+			{this.props.isFetching ? <Preloader/> : null}{/*//Это крутилка*/}
 			<Users totalUsersCount={this.props.totalUsersCount}
 						 pageSize={this.props.pageSize}
 						 currentPage={this.props.currentPage}
@@ -51,7 +48,7 @@ class UsersContainer extends React.Component {
 						 users={this.props.users}
 						 follow={this.props.follow}
 						 unfollow={this.props.unfollow}
-						 toggleFollowingProgress={this.props.toggleFollowingProgress}
+						 // toggleFollowingProgress={this.props.toggleFollowingProgress}
 						 followingInProgress={this.props.followingInProgress}
 			/>
 		</>
@@ -73,8 +70,8 @@ let mapStateToProps = (state) => {
 
 //Этот компонент нужен чтоб прокинуть state(данные, состояние) и функции (dispatch) для работы со state
 export default connect(mapStateToProps,
-	{follow, unfollow, setUsers, setCurrentPage, setTotalUsersCount, toggleIsFetching, toggleFollowingProgress})(UsersContainer);
-
+	// {follow, unfollow, setUsers, setCurrentPage, setTotalUsersCount, toggleIsFetching, toggleFollowingProgress})(UsersContainer);
+  {follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers })(UsersContainer);
 // let mapDispatchToProps = (dispatch) => {
 // 	return {
 // 		follow: (userId) => {
