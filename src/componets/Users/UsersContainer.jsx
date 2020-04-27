@@ -8,6 +8,7 @@ import {
 import * as axios from 'axios';//Импортируем всё что там находится в один объект axios
 import Users from './Users';
 import Preloader from "../common/Preloader/Preloader";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 //Этот компонент нужен чтоб в нём выполнять AJAX запросы
 class UsersContainer extends React.Component {
@@ -57,6 +58,8 @@ class UsersContainer extends React.Component {
 
 //--------------------------------------------------------------------------
 
+let AuthRedirectComponent = withAuthRedirect(UsersContainer);//HOC обёртка чтоб проверить зарегестрирован пользователь или нет
+
 let mapStateToProps = (state) => {
 	return {
 		users: state.usersPage.users,
@@ -71,7 +74,7 @@ let mapStateToProps = (state) => {
 //Этот компонент нужен чтоб прокинуть state(данные, состояние) и функции (dispatch) для работы со state
 export default connect(mapStateToProps,
 	// {follow, unfollow, setUsers, setCurrentPage, setTotalUsersCount, toggleIsFetching, toggleFollowingProgress})(UsersContainer);
-  {follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers })(UsersContainer);
+  {follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers })(AuthRedirectComponent);
 // let mapDispatchToProps = (dispatch) => {
 // 	return {
 // 		follow: (userId) => {
