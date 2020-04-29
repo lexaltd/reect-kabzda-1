@@ -9,6 +9,7 @@ import * as axios from 'axios';//Импортируем всё что там н�
 import Users from './Users';
 import Preloader from "../common/Preloader/Preloader";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 //Этот компонент нужен чтоб в нём выполнять AJAX запросы
 class UsersContainer extends React.Component {
@@ -57,9 +58,6 @@ class UsersContainer extends React.Component {
 }
 
 //--------------------------------------------------------------------------
-
-let AuthRedirectComponent = withAuthRedirect(UsersContainer);//HOC обёртка чтоб проверить зарегестрирован пользователь или нет
-
 let mapStateToProps = (state) => {
 	return {
 		users: state.usersPage.users,
@@ -71,10 +69,6 @@ let mapStateToProps = (state) => {
 	}
 };
 
-//Этот компонент нужен чтоб прокинуть state(данные, состояние) и функции (dispatch) для работы со state
-export default connect(mapStateToProps,
-	// {follow, unfollow, setUsers, setCurrentPage, setTotalUsersCount, toggleIsFetching, toggleFollowingProgress})(UsersContainer);
-  {follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers })(AuthRedirectComponent);
 // let mapDispatchToProps = (dispatch) => {
 // 	return {
 // 		follow: (userId) => {
@@ -100,3 +94,18 @@ export default connect(mapStateToProps,
 //
 // //Этот компонент нужен чтоб прокинуть state(данные, состояние) и функции (dispatch) для работы со state
 // export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+
+
+// let AuthRedirectComponent = withAuthRedirect(UsersContainer);//HOC обёртка чтоб проверить зарегестрирован пользователь или нет
+//Этот компонент нужен чтоб прокинуть state(данные, состояние) и функции (dispatch) для работы со state
+// export default connect(mapStateToProps,
+// 	// {follow, unfollow, setUsers, setCurrentPage, setTotalUsersCount, toggleIsFetching, toggleFollowingProgress})(UsersContainer);
+// 	{follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers })(AuthRedirectComponent);
+
+//Сокращаем запись вместо того что в верху написали это(это конвеер по оборачинию компонены в другии функции)
+//это типа компонент пропускаешь через другие функции ,а в этих функциях что то происход с компонентом ,добовляется функционал, объекты
+//Компонент UsersContainer - оборачиваем сначало в withAuthRedirect, потом в connect(mapStateToProps,{follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers })
+export default compose(
+	withAuthRedirect,
+	connect(mapStateToProps,{follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers })
+)(UsersContainer)

@@ -3,6 +3,7 @@ import {sendMessageCreator, updateNewMessageBodyCreator} from "../../redux/dialo
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 
 // const DialogsContainer = () => {
@@ -31,8 +32,6 @@ import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 // 	);
 // };
 
-let AuthRedirectComponent = withAuthRedirect(Dialogs);//HOC обёртка чтоб проверить зарегестрирован пользователь или нет
-
 let mapStateToProps = (state) => {
 	return {
 		dialogsPage: state.dialogsPage,
@@ -50,7 +49,13 @@ let mapDispatchToProps = (dispatch) => {
 	}
 };
 
-//connect - делает то что мы делали в (выше закоментировано) const DialogsContainer = () => {
-const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent);
+// let AuthRedirectComponent = withAuthRedirect(Dialogs);//HOC обёртка чтоб проверить зарегестрирован пользователь или нет
+// //connect - делает то что мы делали в (выше закоментировано) const DialogsContainer = () => {
+// const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent);
+// export default DialogsContainer;
 
-export default DialogsContainer;
+//Сокращаем запись вместо того что в верху написали это
+export default compose(
+	connect(mapStateToProps, mapDispatchToProps),
+	withAuthRedirect
+)(Dialogs);

@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {getUserProfile} from "../../redux/profile-reducer";
 import {Redirect, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 class ProfileContainer extends React.Component {
 	// constructor(props){
@@ -34,15 +35,20 @@ class ProfileContainer extends React.Component {
 	};
 }
 
-let AuthRedirectComponent = withAuthRedirect(ProfileContainer);//HOC обёртка чтоб проверить зарегестрирован пользователь или нет
-
 //Берём из state нужные переменные объекты и добовлям их в props
 let mapStateToProps = (state) => ({
 	profile: state.profilePage.profile,
 });
 
-// export default connect(mapStateToProps, {setUserProfile})(ProfileContainer);
+// let AuthRedirectComponent = withAuthRedirect(ProfileContainer);//HOC обёртка чтоб проверить зарегестрирован пользователь или нет
+// let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent);//Закидываем данные из URL
+// export default connect(mapStateToProps, {getUserProfile})(WithUrlDataContainerComponent);
 
-let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent);//Закидываем данные из URL
-
-export default connect(mapStateToProps, {getUserProfile})(WithUrlDataContainerComponent);
+//Сокращаем запись вместо того что в верху написали это(это конвеер по оборачинию компонены в другии функции)
+//это типа компонент пропускаешь через другие функции ,а в этих функциях что то происход с компонентом ,добовляется функционал, объекты
+//Компонент ProfileContainer - оборачиваем сначало в withAuthRedirect, потом в withRouter, потом в connect(mapStateToProps, {getUserProfile})
+export default compose(
+	withAuthRedirect,
+	withRouter,
+ connect(mapStateToProps, {getUserProfile}),
+)(ProfileContainer);
