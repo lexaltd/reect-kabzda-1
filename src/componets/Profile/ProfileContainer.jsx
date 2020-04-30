@@ -48,7 +48,7 @@ let mapStateToProps = (state) => ({
 //это типа компонент пропускаешь через другие функции ,а в этих функциях что то происход с компонентом ,добовляется функционал, объекты
 //Компонент ProfileContainer - оборачиваем сначало в withAuthRedirect, потом в withRouter, потом в connect(mapStateToProps, {getUserProfile})
 export default compose(
-	withAuthRedirect,
+	// withAuthRedirect,
 	withRouter,
  connect(mapStateToProps, {getUserProfile}),
 )(ProfileContainer);
