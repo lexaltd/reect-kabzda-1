@@ -1,40 +1,56 @@
 import React from 'react';
 import s from './MyPosts.module.css';
 import Post from './Post/Post';
-import {addPostActionCreator} from "../../../redux/profile-reducer";
+// import {addPostActionCreator} from "../../../redux/profile-reducer";
+import {Field, reduxForm} from "redux-form";
+import {maxLengthCreator, required} from "../../../utils/validators/validators";
+import {Textarea} from "../../common/FormsControls/FormsControls";
+
+const maxLength10 = maxLengthCreator(10);
+
+const AddNewPostForm = (props) => {
+	//handleSubmit - это callBack функция из redux-form
+	return (
+		<form onSubmit={props.handleSubmit}>
+			<div>
+				<Field name="newPostText" component={Textarea} placeholder={"Введите ваше сообщение"}
+							 validate={[required, maxLength10]} />
+			</div>
+			<div>
+				<button>Add post</button>
+			</div>
+		</form>
+	)
+};
+
+let AddNewPostFormRedux = reduxForm({form: "ProfileAddNewPostForm"})(AddNewPostForm);
 
 const MyPosts = (props) => {
 	let postsElements = props.posts.map(el => (<Post message={el.message} id={el.id} likesCount={el.likesCount}/>));
 
 	let newPostElement = React.createRef();
-	const onAddPost = () => {
-		//let text = newPostElement.current.value;
-		props.addPost();
-		// props.dispatch({type: 'ADD-POST', message: text});
-		//props.dispatch(addPostActionCreator(text));
-		//newPostElement.current.value = '';
-	};
 
-	let onPostChange = () => {
-		let text = newPostElement.current.value;
-		props.updateNewPostText(text);
-		//let action = { type: 'UPDATE-NEW-POST-TEXT', newText: text};
-		//let action = updateNewPostTextActionCreator(text);
-		//props.dispatch(action);
-		//props.updateNewPostText(text);
+	// let onPostChange = () => {
+	// 	let text = newPostElement.current.value;
+	// 	props.updateNewPostText(text);
+	// };
+
+	const onAddPost = (values) => {
+		props.addPost(values.newPostText);
 	};
 
 	return (
 		<div className={s.postsBlock}>
 			<h3>My post</h3>
-			<div>
-				<div>
-					<textarea onChange={onPostChange} ref={newPostElement} value={props.newPostText}/>
-				</div>
-				<div>
-					<button onClick={onAddPost}>Add post</button>
-				</div>
-			</div>
+			{/*<div>*/}
+				{/*<div>*/}
+					{/*<textarea onChange={onPostChange} ref={newPostElement} value={props.newPostText}/>*/}
+				{/*</div>*/}
+				{/*<div>*/}
+					{/*<button onClick={onAddPost}>Add post</button>*/}
+				{/*</div>*/}
+			{/*</div>*/}
+			<AddNewPostFormRedux onSubmit={onAddPost} />
 			<div className={s.posts}>
 				{postsElements}
 			</div>

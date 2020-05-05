@@ -1,10 +1,10 @@
 import React from 'react';
-import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../redux/profile-reducer";
+import {addPostActionCreator} from "../../../redux/profile-reducer";
 import MyPosts from "./MyPosts";
 // import StoreContext from "../../../StoreContext";
 import {sendMessageCreator, updateNewMessageBodyCreator} from "../../../redux/dialogs-reducer";
 import {connect} from "react-redux";
-import Dialogs from "../../Dialogs/Dialogs";
+// import Dialogs from "../../Dialogs/Dialogs";
 
 // const MyPostsContainer = () => {
 // 	// debugger;
@@ -44,13 +44,13 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
 	return {
-		updateNewPostText: (text) => {
-			let action = updateNewPostTextActionCreator(text);
-			dispatch(action);
+		// updateNewPostText: (text) => {
+		// 	let action = updateNewPostTextActionCreator(text);
+		// 	dispatch(action);
+		// },
+		addPost: (newPostText) => {
+			dispatch(addPostActionCreator(newPostText));
 		},
-		addPost: (body) => {
-			dispatch(addPostActionCreator());
-		}
 	}
 };
 

@@ -1,7 +1,7 @@
 import * as axios from "axios";
 
 const instance = axios.create({
-	withCredentials: true,
+	withCredentials: true,//Чтоб можно было с другово хоста заходить
 	baseURL: 'https://social-network.samuraijs.com/api/1.0/',
 	headers:     {
 		"API-KEY": "db96c89d-bfd8-4d28-95ec-e7f7cea1c6f2"
@@ -44,5 +44,11 @@ export const profileAPI = {
 export const authAPI = {
 	me() {
 		return instance.get(`auth/me`)
+	},
+	login(email, password, rememberMe = false) {
+		return instance.post(`auth/login`, { email, password, rememberMe });
+	},
+	logout() {
+		return instance.delete(`auth/login`);
 	}
 }
