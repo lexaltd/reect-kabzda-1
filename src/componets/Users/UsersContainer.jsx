@@ -3,13 +3,20 @@ import {connect} from "react-redux";
 import {
 	follow,
 	setCurrentPage,
-	unfollow, toggleFollowingProgress, getUsers
+	unfollow, toggleFollowingProgress, requestUsers
 } from "../../redux/users-reducer";
 import * as axios from 'axios';//Импортируем всё что там находится в один объект axios
 import Users from './Users';
 import Preloader from "../common/Preloader/Preloader";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
+import {
+	getCurrentPage,
+	getFollowingInProgress,
+	getIsFetching,
+	getPageSize,
+	getTotalUsersCount, getUsers
+} from "../../redux/users-selectors";
 
 //Этот компонент нужен чтоб в нём выполнять AJAX запросы
 class UsersContainer extends React.Component {
@@ -20,7 +27,7 @@ class UsersContainer extends React.Component {
 	componentDidMount() {
 		// this.props.toggleIsFetching(true);//Это для крутилки(включаем)
 		//
-		// usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
+		// usersAPI.requestUsers(this.props.currentPage, this.props.pageSize).then(data => {
 		// 		this.props.toggleIsFetching(false);//Это для крутилки(выключаем)
 		// 		this.props.setUsers(data.items);
 		// 		this.props.setTotalUsersCount(data.totalCount);
@@ -32,7 +39,7 @@ class UsersContainer extends React.Component {
 		// this.props.setCurrentPage(pageNumber);
 		// this.props.toggleIsFetching(true);//Это для крутилки
 		//
-		// usersAPI.getUsers(pageNumber, this.props.pageSize).then(data => {
+		// usersAPI.requestUsers(pageNumber, this.props.pageSize).then(data => {
 		// 		this.props.toggleIsFetching(false);//Это для крутилки
 		// 		this.props.setUsers(data.items);
 		// 	});
@@ -41,6 +48,7 @@ class UsersContainer extends React.Component {
 	}
 
 	render() {//Возвращает JSX разметку
+		console.log('render Users');
 		return <>
 			{this.props.isFetching ? <Preloader/> : null}{/*//Это крутилка*/}
 			<Users totalUsersCount={this.props.totalUsersCount}
@@ -58,16 +66,27 @@ class UsersContainer extends React.Component {
 }
 
 //--------------------------------------------------------------------------
+// let mapStateToProps = (state) => {
+// 	return {
+// 		users: state.usersPage.users,
+// 		pageSize: state.usersPage.pageSize,
+// 		totalUsersCount: state.usersPage.totalUsersCount,
+// 		currentPage: state.usersPage.currentPage,
+// 		isFetching: state.usersPage.isFetching,
+// 		followingInProgress: state.usersPage.followingInProgress,
+// 	}
+// };
 let mapStateToProps = (state) => {
+	console.log('mapStateToProps Users');
 	return {
-		users: state.usersPage.users,
-		pageSize: state.usersPage.pageSize,
-		totalUsersCount: state.usersPage.totalUsersCount,
-		currentPage: state.usersPage.currentPage,
-		isFetching: state.usersPage.isFetching,
-		followingInProgress: state.usersPage.followingInProgress,
+		users: getUsers(state),
+		pageSize: getPageSize(state),
+		totalUsersCount: getTotalUsersCount(state),
+		currentPage: getCurrentPage(state),
+		isFetching: getIsFetching(state),
+		followingInProgress: getFollowingInProgress(state)
 	}
-};
+}
 
 // let mapDispatchToProps = (dispatch) => {
 // 	return {
@@ -100,12 +119,12 @@ let mapStateToProps = (state) => {
 //Этот компонент нужен чтоб прокинуть state(данные, состояние) и функции (dispatch) для работы со state
 // export default connect(mapStateToProps,
 // 	// {follow, unfollow, setUsers, setCurrentPage, setTotalUsersCount, toggleIsFetching, toggleFollowingProgress})(UsersContainer);
-// 	{follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers })(AuthRedirectComponent);
+// 	{follow, unfollow, setCurrentPage, toggleFollowingProgress, requestUsers })(AuthRedirectComponent);
 
 //Сокращаем запись вместо того что в верху написали это(это конвеер по оборачинию компонены в другии функции)
 //это типа компонент пропускаешь через другие функции ,а в этих функциях что то происход с компонентом ,добовляется функционал, объекты
-//Компонент UsersContainer - оборачиваем сначало в withAuthRedirect, потом в connect(mapStateToProps,{follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers })
+//Компонент UsersContainer - оборачиваем сначало в withAuthRedirect, потом в connect(mapStateToProps,{follow, unfollow, setCurrentPage, toggleFollowingProgress, requestUsers })
 export default compose(
 	// withAuthRedirect,
-	connect(mapStateToProps,{follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers })
+	connect(mapStateToProps,{follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers: requestUsers })
 )(UsersContainer)

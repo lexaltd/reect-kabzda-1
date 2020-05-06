@@ -79,11 +79,12 @@ export const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFe
 export const toggleFollowingProgress = (isFetching, userId) => ({type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userId })
 
 //(это thunk)функция которая диспачит(dispatch) обычные экшены(action),которые делают асинхроную работу
-export const getUsers = (currentPage, pageSize) => {
+export const requestUsers = (page, pageSize) => {
 	return (dispatch) => {
 		dispatch(toggleIsFetching(true));//Это для крутилки(включаем)
+		dispatch(setCurrentPage(page));//Не знаю для чего у и без этого работало
 
-		usersAPI.getUsers(currentPage, pageSize).then(data => {
+		usersAPI.getUsers(page, pageSize).then(data => {
 			dispatch(toggleIsFetching(false));//Это для крутилки(выключаем)
 			dispatch(setUsers(data.items));
 			dispatch(setTotalUsersCount(data.totalCount));
