@@ -106,6 +106,6 @@ let mapStateToProps = (state) => {
 //это типа компонент пропускаешь через другие функции ,а в этих функциях что то происход с компонентом ,добовляется функционал, объекты
 //Компонент UsersContainer - оборачиваем сначало в withAuthRedirect, потом в connect(mapStateToProps,{follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers })
 export default compose(
-	withAuthRedirect,
+	// withAuthRedirect,
 	connect(mapStateToProps,{follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers })
 )(UsersContainer)

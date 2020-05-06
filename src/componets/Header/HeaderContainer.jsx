@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from "./Header";
 import {connect} from "react-redux";
-import {getAuthUserData, logout} from "../../redux/auth-reducer";
+import {logout} from "../../redux/auth-reducer";
 import * as axios from 'axios';//Импортируем всё что там находится в один объект axios
 
 
@@ -16,7 +16,8 @@ class HeaderContainer extends React.Component {
 		// 			this.props.setAuthUserData(id, email, login);
 		// 		}
 		// 	});
-		this.props.getAuthUserData();
+
+		// this.props.getAuthUserData();
 	}
 
 	render() {
@@ -31,4 +32,4 @@ let mapStateToProps = (state) => {
 	}
 };
 
-export default connect(mapStateToProps, {getAuthUserData, logout})(HeaderContainer);
+export default connect(mapStateToProps, {logout})(HeaderContainer);
