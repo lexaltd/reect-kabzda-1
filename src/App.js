@@ -27,7 +27,6 @@ class App extends Component {
 		}
 
 		return (
-			<BrowserRouter>
 				<div className='app-wrapper'>
 					<HeaderContainer/>
 					<Navbar/>
@@ -48,7 +47,6 @@ class App extends Component {
 						<Route path='/login' render={() => <LoginPage/>}/>
 					</div>
 				</div>
-			</BrowserRouter>
 		);
 	}
 }
@@ -59,5 +57,5 @@ const mapStateToProps = (state) => ({
 })
 
 export default compose(//compose - метод чтоб сделать обёртки проще)
-	// withRouter,////Закидываем данные из URL(здесь оборочиваем ,потому что Route здесь начинает не коректно работать ,типа баг)
+	withRouter,////Закидываем данные из URL(здесь оборочиваем ,потому что Route здесь начинает не коректно работать ,типа баг)
 	connect(mapStateToProps, {initializeApp}))(App);

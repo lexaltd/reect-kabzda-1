@@ -25,37 +25,44 @@ const AddNewPostForm = (props) => {
 
 let AddNewPostFormRedux = reduxForm({form: "ProfileAddNewPostForm"})(AddNewPostForm);
 
-const MyPosts = (props) => {
-	let postsElements = props.posts.map(el => (<Post message={el.message} id={el.id} likesCount={el.likesCount}/>));
+// const MyPosts = (props) => {
+const MyPosts = React.memo(props => {
+		 console.log("RENDER YO");
 
-	let newPostElement = React.createRef();
+		// let postsElements = props.posts.map(el => (<Post message={el.message} id={el.id} likesCount={el.likesCount}/>));
+		let postsElements =
+			[...props.posts]
+				.reverse()
+				.map(el => (<Post message={el.message} id={el.id} likesCount={el.likesCount}/>));
 
-	// let onPostChange = () => {
-	// 	let text = newPostElement.current.value;
-	// 	props.updateNewPostText(text);
-	// };
+		let newPostElement = React.createRef();
 
-	const onAddPost = (values) => {
-		props.addPost(values.newPostText);
-	};
+		// let onPostChange = () => {
+		// 	let text = newPostElement.current.value;
+		// 	props.updateNewPostText(text);
+		// };
 
-	return (
-		<div className={s.postsBlock}>
-			<h3>My post</h3>
-			{/*<div>*/}
+		const onAddPost = (values) => {
+			props.addPost(values.newPostText);
+		};
+
+		return (
+			<div className={s.postsBlock}>
+				<h3>My post</h3>
 				{/*<div>*/}
-					{/*<textarea onChange={onPostChange} ref={newPostElement} value={props.newPostText}/>*/}
+				{/*<div>*/}
+				{/*<textarea onChange={onPostChange} ref={newPostElement} value={props.newPostText}/>*/}
 				{/*</div>*/}
 				{/*<div>*/}
-					{/*<button onClick={onAddPost}>Add post</button>*/}
+				{/*<button onClick={onAddPost}>Add post</button>*/}
 				{/*</div>*/}
-			{/*</div>*/}
-			<AddNewPostFormRedux onSubmit={onAddPost} />
-			<div className={s.posts}>
-				{postsElements}
+				{/*</div>*/}
+				<AddNewPostFormRedux onSubmit={onAddPost}/>
+				<div className={s.posts}>
+					{postsElements}
+				</div>
 			</div>
-		</div>
-	);
-};
+		);
+});
 
 export default MyPosts;

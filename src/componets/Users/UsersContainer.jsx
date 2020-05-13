@@ -32,7 +32,8 @@ class UsersContainer extends React.Component {
 		// 		this.props.setUsers(data.items);
 		// 		this.props.setTotalUsersCount(data.totalCount);
 		// 	});
-		this.props.getUsers(this.props.currentPage, this.props.pageSize);
+		const {currentPage, pageSize} = this.props;
+		this.props.getUsers(currentPage, pageSize);
 	}
 
 	onPageChanged = (pageNumber) => {
@@ -43,8 +44,9 @@ class UsersContainer extends React.Component {
 		// 		this.props.toggleIsFetching(false);//Это для крутилки
 		// 		this.props.setUsers(data.items);
 		// 	});
+		const {pageSize} = this.props;
 		this.props.setCurrentPage(pageNumber);//Чтоб выделялся жирным номер строки
-		this.props.getUsers(pageNumber, this.props.pageSize);
+		this.props.getUsers(pageNumber, pageSize);
 	}
 
 	render() {//Возвращает JSX разметку
