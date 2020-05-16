@@ -10,9 +10,10 @@ import ProfileContainer from "./componets/Profile/ProfileContainer";
 import HeaderContainer from "./componets/Header/HeaderContainer";
 import LoginPage from "./componets/Login/Login";
 import Preloader from "./componets/common/Preloader/Preloader";
-import {connect} from "react-redux";
 import {compose} from "redux";
 import {initializeApp} from "./redux/app-reducer";
+import store from "./redux/redux-store";
+import {connect, Provider} from "react-redux";
 
 
 // const App = (props) => {
@@ -27,26 +28,26 @@ class App extends Component {
 		}
 
 		return (
-				<div className='app-wrapper'>
-					<HeaderContainer/>
-					<Navbar/>
-					<div className='app-wrapper-content'>
-						{/*//exact path='/dialogs' - чтоб переходил только по dialogs - и ни куда дальше*/}
-						{/*//Route - перехватывает пути - url(path='/profile') и загружает нужный компонент(Dialogs)*/}
-						{/*<Route path='/dialogs' component={Dialogs}/>*/}
-						{/*<Route path='/profile' component={Profile}/>*/}
+			<div className='app-wrapper'>
+				<HeaderContainer/>
+				<Navbar/>
+				<div className='app-wrapper-content'>
+					{/*//exact path='/dialogs' - чтоб переходил только по dialogs - и ни куда дальше*/}
+					{/*//Route - перехватывает пути - url(path='/profile') и загружает нужный компонент(Dialogs)*/}
+					{/*<Route path='/dialogs' component={Dialogs}/>*/}
+					{/*<Route path='/profile' component={Profile}/>*/}
 
-						{/*<Route path='/dialogs' render={()=><DialogsContainer store={props.store}/>}/>*/}
-						{/*<Route path='/profile' render={()=><Profile store={props.store}/> }/>*/}
+					{/*<Route path='/dialogs' render={()=><DialogsContainer store={props.store}/>}/>*/}
+					{/*<Route path='/profile' render={()=><Profile store={props.store}/> }/>*/}
 
-						<Route path='/dialogs' render={() => <DialogsContainer/>}/>
-						{/*<Route path='/profile' render={()=><Profile /> }/>*/}
-						<Route path='/profile/:userId?'
-									 render={() => <ProfileContainer/>}/>{/*? знак даёт понять что :userId парамеир не обязательный*/}
-						<Route path='/users' render={() => <UsersContainer/>}/>
-						<Route path='/login' render={() => <LoginPage/>}/>
-					</div>
+					<Route path='/dialogs' render={() => <DialogsContainer/>}/>
+					{/*<Route path='/profile' render={()=><Profile /> }/>*/}
+					<Route path='/profile/:userId?'
+								 render={() => <ProfileContainer/>}/>{/*? знак даёт понять что :userId парамеир не обязательный*/}
+					<Route path='/users' render={() => <UsersContainer/>}/>
+					<Route path='/login' render={() => <LoginPage/>}/>
 				</div>
+			</div>
 		);
 	}
 }
@@ -56,6 +57,25 @@ const mapStateToProps = (state) => ({
 	initialized: state.app.initialized
 })
 
-export default compose(//compose - метод чтоб сделать обёртки проще)
+//------Было так--------------------------------------------------------------------------
+// export default compose(//compose - метод чтоб сделать обёртки проще)
+// 	withRouter,////Закидываем данные из URL(здесь оборочиваем ,потому что Route здесь начинает не коректно работать ,типа баг)
+// 	connect(mapStateToProps, {initializeApp}))(App);
+//---------------------------------------------------------------
+//-----Стало так ,чтоб тесты отрабатывали--------------------------------------------------
+let AppContainer = compose(//compose - метод чтоб сделать обёртки проще)
 	withRouter,////Закидываем данные из URL(здесь оборочиваем ,потому что Route здесь начинает не коректно работать ,типа баг)
 	connect(mapStateToProps, {initializeApp}))(App);
+
+const SamuraiJSApp = (props) => {
+	return (
+		<BrowserRouter>
+			<Provider store={store}>
+				<AppContainer/>
+			</Provider>
+		</BrowserRouter>
+	)
+}
+
+export default SamuraiJSApp;
+//---------------------------------------------------------------
