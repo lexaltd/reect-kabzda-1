@@ -46,7 +46,7 @@ class UsersContainer extends React.Component {
 		// 	});
 		const {pageSize} = this.props;
 		this.props.setCurrentPage(pageNumber);//Чтоб выделялся жирным номер строки
-		this.props.getUsers(pageNumber, pageSize);
+		this.props.getUsers(pageNumber, pageSize);//Получить пользователей для этой страницы
 	}
 
 	render() {//Возвращает JSX разметку
