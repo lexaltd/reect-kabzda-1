@@ -15,7 +15,7 @@ let Paginator = ({totalItemsCount, pageSize, currentPage, onPageChanged, portion
 	let [portionNumber, setPortionNumber] = useState(1);//текущий номер порции, useState-использовать локальный State
 	let leftPortionPageNumber = (portionNumber - 1) * portionSize + 1;//Левая граница порции
 	let rightPortionPageNumber = portionNumber * portionSize;//Правая граница порции
-debugger
+
 	// return <div>
 	// 	{pages.map(p => {
 	// 		return <span className={currentPage === p && styles.selectedPage}
