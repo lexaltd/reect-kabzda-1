@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Navbar from './componets/Navbar/Navbar';
 import {BrowserRouter, Route, withRouter} from "react-router-dom";
+import {HashRouter} from "react-router-dom";//нужен чтоб работал - GitHub Pages, в нормальных условиях используют BrowserRouter
 import state, {addPost} from "./redux/store";
 import UsersContainer from "./componets/Users/UsersContainer";
 import HeaderContainer from "./componets/Header/HeaderContainer";
@@ -77,11 +78,13 @@ let AppContainer = compose(//compose - метод чтоб сделать обё
 
 const SamuraiJSApp = (props) => {
 	return (
-		<BrowserRouter>
+	<HashRouter >
+		{/*<BrowserRouter>*/}
 			<Provider store={store}>
 				<AppContainer/>
 			</Provider>
-		</BrowserRouter>
+		{/*</BrowserRouter>*/}
+	</HashRouter>
 	)
 }
 
