@@ -1,7 +1,7 @@
 import React from 'react';
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getStatus, getUserProfile, updateStatus} from "../../redux/profile-reducer";
+import {getStatus, getUserProfile, updateStatus, savePhoto} from "../../redux/profile-reducer";
 import {Redirect, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
@@ -11,11 +11,10 @@ class ProfileContainer extends React.Component {
 	// 	super(props);
 	// }
 
-	// вызывается сразу после монтирования (то есть, вставки компонента в DOM). В этом методе должны происходить действия, которые требуют наличия DOM-узлов. Это хорошее место для создания сетевых запросов.
-	componentDidMount() {
+
+	refreshProfile() {
 		let userId = this.props.match.params.userId;
 		if (!userId) {
-			// userId = 1049;
 			userId = this.props.authorizedUserId;
 			if (!userId) {//Если нет авторизации на страницу логина
 				this.props.history.push("/login");
@@ -29,11 +28,28 @@ class ProfileContainer extends React.Component {
 		this.props.getStatus(userId);
 	}
 
+
+	// вызывается сразу после монтирования (то есть, вставки компонента в DOM). В этом методе должны происходить действия, которые требуют наличия DOM-узлов. Это хорошее место для создания сетевых запросов.
+	componentDidMount() {
+		this.refreshProfile();
+	}
+
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		if (this.props.match.params.userId != prevProps.match.params.userId ) {//Это условие надо чтоб не было зациклености
+			this.refreshProfile();
+		}
+	}
+
 	render() {
 		// if (!this.props.isAuth) return <Redirect to={"/login"} />;
 		return (
 			<div>
-				<Profile {...this.props} profile={this.props.profile} status={this.props.status} updateStatus={this.props.updateStatus}/>
+				<Profile {...this.props}
+								 isOwner={!this.props.match.params.userId}
+								 profile={this.props.profile}
+								 status={this.props.status}
+								 updateStatus={this.props.updateStatus}
+								 savePhoto={this.props.savePhoto}/>
 			</div>
 		);
 	};
@@ -57,5 +73,5 @@ let mapStateToProps = (state) => ({
 export default compose(
 	// withAuthRedirect,
 	withRouter,
- connect(mapStateToProps, {getUserProfile, getStatus, updateStatus}),
+ connect(mapStateToProps, {getUserProfile, getStatus, updateStatus, savePhoto}),
 )(ProfileContainer);
