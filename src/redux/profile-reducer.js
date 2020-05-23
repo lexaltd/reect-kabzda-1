@@ -1,5 +1,6 @@
 import {setAuthUserData} from "./auth-reducer";
 import {profileAPI, usersAPI} from "../api/api";
+import {stopSubmit} from "redux-form";
 
 const ADD_POST = 'ADD-POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
@@ -87,6 +88,21 @@ export const savePhoto = (file) => async (dispatch) => {
 
 	if (response.data.resultCode === 0) {
 		dispatch(savePhotoSuccess(response.data.data.photos));
+	}
+}
+
+export const saveProfile = (profile) => async (dispatch, getState) => {
+	const userId = getState().auth.userId;//Получаем из State userId
+	const response = await profileAPI.saveProfile(profile);//Отправляем на сервер данные обновлённого профиля
+
+	if (response.data.resultCode === 0) {
+		dispatch(getUserProfile(userId));//Запрашиваем у сервера новые данные профиля
+	} else {
+		debugger
+		dispatch(stopSubmit("edit-profile", {_error: response.data.messages[0] }));//Если ошибка пришла с сервера, выведится общая ошибка для всей формы
+		//Если ошибка пришла с сервера: И добавится ошибка именно под поле contacts.facebook, только надо распарсить ошибку(response.data.messages[0]) и найти к какому полю пришла
+		dispatch(stopSubmit("edit-profile", {"contacts":{"facebook": response.data.messages[0]}} ));
+		return Promise.reject(response.data.messages[0]);
 	}
 }
 
