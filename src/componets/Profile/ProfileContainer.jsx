@@ -35,6 +35,7 @@ class ProfileContainer extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
+		//match - он взялся из withRouter
 		if (this.props.match.params.userId != prevProps.match.params.userId ) {//Это условие надо чтоб не было зациклености
 			this.refreshProfile();
 		}

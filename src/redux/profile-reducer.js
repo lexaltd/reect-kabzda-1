@@ -77,9 +77,16 @@ export const getStatus = (userId) => async (dispatch) => {
 }
 
 export const updateStatus = (status) => async (dispatch) => {
-	const response = await profileAPI.updateStatus(status);
-	if (response.data.resultCode === 0) {
-		dispatch(setStatus(status));
+	try {//Обработка ошибки
+		const response = await profileAPI.updateStatus(status);
+		console.log("status: " + response.status);
+
+		if (response.data.resultCode === 0) {
+			dispatch(setStatus(status));
+		}
+	} catch (error) {
+		console.warn("Внимание: Необработанная ошибка в updateStatus. Причина: " + error);
+		console.warn("status: " + error.response.status);
 	}
 }
 
